@@ -1,0 +1,24 @@
+# Define the directory you want to organize
+$sourceDir = "C:\Path\To\Your\Directory"
+
+# Get all files in the directory
+$files = Get-ChildItem -Path $sourceDir -File
+
+# Loop through each file
+foreach ($file in $files) {
+    # Get the file extension (without the dot)
+    $extension = $file.Extension.TrimStart('.')
+
+    # Define the destination folder
+    $destinationDir = Join-Path $sourceDir $extension
+
+    # If the destination folder doesn't exist, create it
+    if (-not (Test-Path -Path $destinationDir)) {
+        New-Item -Path $destinationDir -ItemType Directory
+    }
+
+    # Move the file to the destination folder
+    Move-Item -Path $file.FullName -Destination $destinationDir
+}
+
+Write-Host "Files have been sorted by type."
